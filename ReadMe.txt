@@ -1,6 +1,9 @@
 # Scripts for neonatal template construction
 # 
 # "Construction of a neonatal cortical surface atlas using Multimodal Surface Matching in the Developing Human Connectome Project", Bozek et al., Neuroimage, 179, p. 11-29, 2018
+
+# templates available at: 
+https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortical-surface-atlas-bozek/
  
 
 
