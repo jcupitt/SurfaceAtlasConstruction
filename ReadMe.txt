@@ -7,7 +7,7 @@ https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortic
  
 
 
-# scripts need to be run one after the other to construct the neonatal cortical surface template - change paths in scripts and maybe the location of binaries; also check if file naming convention has been changed
+# scripts need to be run one after the other to construct the neonatal cortical surface template - change paths in scripts and location of binaries; also check if file naming convention has been changed
 
 
 #start with affine registration of subjects to Conte69; the batch script submits affine_to_Conte.sh to slurm 
@@ -49,18 +49,3 @@ https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/cortic
 
 # apply alignment and average all features after final iteration (sulcal depth, thickness and myelin maps)
 ./adaptive_dataConte_toConte_data_resample_average_after_iters.bat
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
