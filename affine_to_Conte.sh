@@ -1,11 +1,19 @@
 #!/bin/bash
 
-source=$1 
-week=$2
-hemi=$3
+# run with eg.:
+#   ./affine_to_Conte.sh CC00058XX13 43.2 L
 
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
+
+if [ $# -ne 3 ]; then
+  echo "usage: $0 source week hemi"
+  exit 1
+fi
+
+source=$1 
+week=$2
+hemi=$3
 
 
 inmesh=${dir}/${source}/${source}.${hemi}.sphere.template-${week}.RIGID.recentred.rotatedToConte.surf.gii 
