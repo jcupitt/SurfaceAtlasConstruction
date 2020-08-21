@@ -18,6 +18,10 @@ export FSLDIR=/vol/dhcp-derived-data/surface-atlas-jcupitt/fsl
 . $FSLDIR/etc/fslconf/fsl.sh 
 PATH=$FSLDIR/bin:$PATH
 
+# workbench is used for pre_rotation.sh
+export WORKBENCHHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/workbench
+PATH=$WORKBENCHHOME/bin:$PATH
+
 # write all output here
 outdir=/vol/dhcp-derived-data/surface-atlas-jcupitt/work
 logdir=$outdir/logs
@@ -25,9 +29,12 @@ affinedir=$outdir/affineToConte
 
 # set of file to process 
 # columns are
-#     source age week
+# 	subject_id session_id age_at_scan
 # separated by whitespace (no commas) and no header line
-to_process=$config/subjs_270_ageScan_week.csv
+to_process=$config/subjects.tsv
+
+# struct pipeline output we process
+indir=/vol/dhcp-derived-data/derived_jun20_recon07
 
 # location of input subject spheres - meshes that have been pre-aligned, 
 # through estimation of a rigid transformation between each subject's T2w 
@@ -44,6 +51,7 @@ dir=/vol/medic01/users/jbozek/MSMtemplate/subjects
 # location of input data file (sulc)
 DATAdir=/vol/dhcp-derived-data/structural-pipeline/dhcp-v2.4/
 
-atlasDir=/vol/medic01/users/jbozek/HCP_standard_mesh_atlases/Conte69/MNINonLinear/fsaverage_LR32k
+# conte69 atlas
+atlasDir=/vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k
 
 

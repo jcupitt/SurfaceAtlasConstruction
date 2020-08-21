@@ -1,5 +1,49 @@
 #!/bin/bash
 
+# run with eg.:
+#   ./pre_rotation.sh CC00058XX13-34534 43 L
+
+codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $codedir/config/paths.sh
+
+if [ $# -ne 3 ]; then
+  echo "usage: $0 scan week hemi"
+  exit 1
+fi
+
+scan=$1 
+week=$2
+hemi=$3
+
+if ! [[ $scan =~ (CC.*)-(.*) ]]; then
+  echo "bad scan $scan"
+  exit 1
+fi
+subject=${BASH_REMATCH[1]}
+session=${BASH_REMATCH[2]}
+
+echo subject = $subject
+echo session = $session
+
+exit 0
+
+in_volume=${indir}/derivatives/sub-${subjid}/ses-$session/anat/sub-${subjid}_ses-${session}_T2w_restore_brain.nii.gz
+
+
+in_sphere=$2
+vol_template=$3
+surf_transform=$4
+out_dof=$5
+out_sphere=$6
+
+
+# used to run with:
+
+${SURF2TEMPLATE}/surface_to_template_alignment/pre_rotation.sh $native_volume
+$native_sphereL $templatevolume $pre_rotationL
+$outdir/volume_dofs/${subjid}-${session}.dof ${native_rot_sphereL}  $mirtk_BIN
+$WB_BIN
+
 in_volume=$1
 in_sphere=$2
 vol_template=$3

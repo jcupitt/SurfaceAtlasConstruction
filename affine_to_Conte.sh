@@ -15,7 +15,6 @@ source=$1
 week=$2
 hemi=$3
 
-
 inmesh=${dir}/${source}/${source}.${hemi}.sphere.template-${week}.RIGID.recentred.rotatedToConte.surf.gii 
 refmesh=${atlasDir}/Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii
 
