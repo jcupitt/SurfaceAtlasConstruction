@@ -22,17 +22,22 @@ fi
 subject=${BASH_REMATCH[1]}
 session=${BASH_REMATCH[2]}
 
-echo subject = $subject
-echo session = $session
+if ! [[ $hemi =~ L|R ]]; then
+  echo "bad hemi $hemi"
+  exit 1
+fi
+if [[ $hemi = L ]]; then
+  hemi_name=left
+else
+  hemi_name=right
+fi
 
-exit 0
+in_volume=${indir}/derivatives/sub-$subject/ses-$session/anat/sub-${subject}_ses-${session}_T2w_restore_brain.nii.gz
+in_sphere=${indir}/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sphere.surf.gii
+vol_template=$volumetric_atlas_dir/average/t2w/t$week.nii.gz
 
-in_volume=${indir}/derivatives/sub-${subjid}/ses-$session/anat/sub-${subjid}_ses-${session}_T2w_restore_brain.nii.gz
+surf_transform=/vol/medic01/users/ecr05/dHCP_processing/TEMPLATES/new_surface_template/week40.iter30.sphere.%hemi%.dedrift.AVERAGE_removedAffine.surf.gii
 
-
-in_sphere=$2
-vol_template=$3
-surf_transform=$4
 out_dof=$5
 out_sphere=$6
 

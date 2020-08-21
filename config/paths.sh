@@ -36,22 +36,10 @@ to_process=$config/subjects.tsv
 # struct pipeline output we process
 indir=/vol/dhcp-derived-data/derived_jun20_recon07
 
-# location of input subject spheres - meshes that have been pre-aligned, 
-# through estimation of a rigid transformation between each subject's T2w 
-# image and the infant volumetric template. 
-# 
-# This ensures all neonatal surfaces have the same orientation and centering. 
-# Further, we estimate, and apply to each individual surface, a rotation 
-# between previously developed template (Bozek et al., 2016), which was 
-# constructed in MNI space, and adult Conte69 atlas (Van Essen et al., 
-# 2012; Glasser and Van Essen, 2011), which is signficantly rotated with 
-# respect to the MNI space, in order to initialise alignment.
-dir=/vol/medic01/users/jbozek/MSMtemplate/subjects 
-
-# location of input data file (sulc)
-DATAdir=/vol/dhcp-derived-data/structural-pipeline/dhcp-v2.4/
+# schuh atlas we use as volumetric template space
+volumetric_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-jan2020
 
 # conte69 atlas
-atlasDir=/vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k
+conte_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k
 
 

@@ -70,6 +70,15 @@ This is quite hard to download -- the server which hosts the atlas failed in
 2016 and you now have to apply for access to a backup server. Use the copy
 above if possible.
 
+## Schuh atlas
+
+You need the atlas for volumetric template space. dHCP uses the Schuh atlas,
+and I put a copy of the latest one here:
+
+```
+/vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-jan2020
+```
+
 ## Edit `config/paths.sh`
 
 You need to set the various variables to point to the right directories.
