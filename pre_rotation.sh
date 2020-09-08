@@ -6,6 +6,8 @@
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
+echo PATH = $PATH
+
 if [ $# -ne 3 ]; then
   echo "usage: $0 scan week hemi"
   exit 1
@@ -34,35 +36,18 @@ fi
 
 in_volume=${indir}/derivatives/sub-$subject/ses-$session/anat/sub-${subject}_ses-${session}_T2w_restore_brain.nii.gz
 in_sphere=${indir}/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sphere.surf.gii
-vol_template=$volumetric_atlas_dir/average/t2w/t$week.nii.gz
+vol_template=$volumetric_atlas_dir/templates/t2w/t$week.nii.gz
+surf_transform=$surface_template_dir/week40.iter30.sphere.$hemi.dedrift.AVERAGE_removedAffine.surf.gii
+intermediate_sphere=$(echo $in_sphere | sed 's/.surf.gii/tmp_rot.surf.gii/g')
 
-surf_transform=/vol/medic01/users/ecr05/dHCP_processing/TEMPLATES/new_surface_template/week40.iter30.sphere.%hemi%.dedrift.AVERAGE_removedAffine.surf.gii
-
-out_dof=$5
-out_sphere=$6
-
-
-# used to run with:
-
-${SURF2TEMPLATE}/surface_to_template_alignment/pre_rotation.sh $native_volume
-$native_sphereL $templatevolume $pre_rotationL
-$outdir/volume_dofs/${subjid}-${session}.dof ${native_rot_sphereL}  $mirtk_BIN
-$WB_BIN
-
-in_volume=$1
-in_sphere=$2
-vol_template=$3
-surf_transform=$4
-out_dof=$5
-out_sphere=$6
-mirtk=$7
-wb_command=$8
-
+# the file we generate
+out_dof=$outdir/volume_dofs/$subject-$session.dof
 out_doftxt=$(echo $out_dof | sed 's/\.dof/\.txt/g')
+out_sphere=$outdir/work/$subject-$session/${hemi_name}_sphere.rot.surf.gii
 
-echo newnames $out_dof $out_doftxt $intermediate_sphere
+run mirtk register $vol_template $in_volume  -model Rigid -sim NMI -bins 64 -dofout $out_dof
 
-echo mirtk register $vol_template $in_volume  -model Rigid -sim NMI -bins 64 -dofout $out_dof
+exit 
 
 if [ ! -f $out_doftxt ]; then
     $mirtk register $vol_template $in_volume  -model Rigid -sim NMI -bins 64 -dofout $out_dof
@@ -73,7 +58,6 @@ else
 fi
 
 
-intermediate_sphere=$(echo $in_sphere | sed 's/.surf.gii/tmp_rot.surf.gii/g')
 
 $wb_command -surface-apply-affine $in_sphere $out_doftxt $intermediate_sphere
 

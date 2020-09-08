@@ -1,6 +1,6 @@
 # Install notes for Ubuntu 16.04
 
-## FSL, MSN and Workbench
+## FSL, MSN, Workbench and MIRTK
 
 You need FSL6 and MSM built from source. You won't be able to do this on the
 Imperial machines unless you have admin rights since you need 
@@ -58,6 +58,28 @@ And untar somewhere. I put it here:
 /vol/dhcp-derived-data/surface-atlas-jcupitt/workbench
 ```
 
+You also need MIRTK. You can build it like this:
+
+```
+cd docker-builds/mirtk-ubuntu16.04
+docker build -t john/mirtk:xenial .
+```
+
+And get the binary out with scp:
+
+```
+docker run --rm -it mirtk:xenial /bin/bash
+tar cfz mirtk.tar.gz mirtk
+scp mirtk.tar.gz jcupitt@yishui:
+^D
+```
+
+And untar somewhere. I put it here:
+
+```
+/vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
+```
+
 ## Conte69 atlas
 
 There's a copy of the complete atlas in:
@@ -79,6 +101,10 @@ and I put a copy of the latest one here:
 /vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-jan2020
 ```
 
+## `templateDHCP` and `new_surface_template`
+
+Need these too, add notes.
+
 ## Edit `config/paths.sh`
 
 You need to set the various variables to point to the right directories.
@@ -93,7 +119,7 @@ You need to set the various variables to point to the right directories.
 Test with something like this (scan name, age at scan, hemisphere):
 
 ```
-./pre_rotate.sh CC00507XX12-148202 42 L
+./pre_rotation.sh CC00507XX12-148202 42 L
 ```
 
 Then to process all scans:

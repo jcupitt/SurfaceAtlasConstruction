@@ -42,4 +42,15 @@ volumetric_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-ja
 # conte69 atlas
 conte_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k
 
+# surface templates
+surface_template_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/new_surface_template
 
+run() {
+	cmd="$1"
+	echo $cmd
+	$cmd
+	if ! [ $? ]; then
+		echo failed
+		exit 1
+	fi
+}
