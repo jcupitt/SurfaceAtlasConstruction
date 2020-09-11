@@ -69,6 +69,7 @@ And get the binary out with scp:
 
 ```
 docker run --rm -it mirtk:xenial /bin/bash
+cd /usr/local
 tar cfz mirtk.tar.gz mirtk
 scp mirtk.tar.gz jcupitt@yishui:
 ^D
@@ -111,7 +112,7 @@ You need to set the various variables to point to the right directories.
 
 - Conte69 atlas
 - Struct pipeline output
-- MSM/FSL/Workbench binaries
+- MSM/FSL/Workbench/MIRTK binaries
 - Ages and names of volumes to process for the cluster scripts in `ages.csv`
 
 ## Pre-align surfaces

@@ -6,8 +6,6 @@
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
-echo PATH = $PATH
-
 if [ $# -ne 3 ]; then
   echo "usage: $0 scan week hemi"
   exit 1
@@ -43,29 +41,29 @@ intermediate_sphere=$(echo $in_sphere | sed 's/.surf.gii/tmp_rot.surf.gii/g')
 # the file we generate
 out_dof=$outdir/volume_dofs/$subject-$session.dof
 out_doftxt=$(echo $out_dof | sed 's/\.dof/\.txt/g')
-out_sphere=$outdir/work/$subject-$session/${hemi_name}_sphere.rot.surf.gii
+out_sphere=$outdir/$subject-$session/${hemi_name}_sphere.rot.surf.gii
 
-run mirtk register $vol_template $in_volume  -model Rigid -sim NMI -bins 64 -dofout $out_dof
-
-exit 
+mkdir -p $outdir/volume_dofs
+mkdir -p $outdir/
 
 if [ ! -f $out_doftxt ]; then
-    $mirtk register $vol_template $in_volume  -model Rigid -sim NMI -bins 64 -dofout $out_dof
+  run mirtk register $vol_template $in_volume \
+    -model Rigid -sim NMI -bins 64 -dofout $out_dof
 
-    $mirtk convert-dof $out_dof  $out_doftxt -target $vol_template -source $in_volume -output-format flirt
-else
-    echo "dof exists!"
+  run mirtk convert-dof $out_dof $out_doftxt \
+    -target $vol_template -source $in_volume -output-format flirt
 fi
 
+run wb_command -surface-apply-affine \
+  $in_sphere $out_doftxt $intermediate_sphere
 
+run wb_command -surface-modify-sphere  \
+  $intermediate_sphere 100 $intermediate_sphere -recenter
 
-$wb_command -surface-apply-affine $in_sphere $out_doftxt $intermediate_sphere
+run wb_command -surface-apply-affine \
+  $intermediate_sphere  $surf_transform  $out_sphere
 
-$wb_command -surface-modify-sphere  $intermediate_sphere 100 $intermediate_sphere -recenter
+run wb_command -surface-modify-sphere  \
+  $out_sphere 100 $out_sphere -recenter
 
-$wb_command -surface-apply-affine $intermediate_sphere  $surf_transform  $out_sphere
-
-$wb_command -surface-modify-sphere  $out_sphere 100 $out_sphere -recenter
 rm $intermediate_sphere
-
-

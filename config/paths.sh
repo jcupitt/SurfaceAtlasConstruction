@@ -22,6 +22,10 @@ PATH=$FSLDIR/bin:$PATH
 export WORKBENCHHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/workbench
 PATH=$WORKBENCHHOME/bin:$PATH
 
+# and we need MIRTK for registration
+export MIRTKHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
+PATH=$MIRTKHOME/bin:$PATH
+
 # write all output here
 outdir=/vol/dhcp-derived-data/surface-atlas-jcupitt/work
 logdir=$outdir/logs
@@ -45,12 +49,18 @@ conte_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINo
 # surface templates
 surface_template_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/new_surface_template
 
+mkdir -p $logdir
+
 run() {
-	cmd="$1"
-	echo $cmd
-	$cmd
-	if ! [ $? ]; then
-		echo failed
+	cmd="$*"
+	echo running: $cmd
+	echo running: $cmd >> $logdir/$$.output.log
+	echo running: $cmd >> $logdir/$$.error.log
+	$cmd >> $logdir/$$.output.log 2>> $logdir/$$.error.log
+	if [ $? != 0 ]; then
+		echo =====================
+		echo failed: $logdir/$$.error.log 
+		tail $logdir/$$.error.log
 		exit 1
 	fi
 }
