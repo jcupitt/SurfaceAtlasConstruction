@@ -13,13 +13,19 @@ The templates may be downloaded from:
 # Process
  
 The scripts need to be run one after the other to construct the neonatal
-cortical surface template -- change paths in scripts and location of binaries;
-also check if file naming convention has been changed.
+cortical surface template.
 
-Start with affine registration of subjects to Conte69; the batch script
-submits `affine_to_Conte.sh` to slurm
+See:
 
-    ./affine_to_Conte.bat
+    config/paths.sh
+
+To set all paths and the set of files to process. Also check if file naming
+convention has been changed.
+
+Start with affine registration of subjects to Conte69; this driver script
+submits `affine_to_Conte.sh` to slurm.
+
+    ./affine_to_Conte_slurm.sh
 
 Now do initial msm using sulcal depth map to drive the registration; the
 batch script submits `msm_template_to_subjects_iterate.sh` to slurm. Script
