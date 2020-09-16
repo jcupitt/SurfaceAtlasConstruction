@@ -126,7 +126,7 @@ Test with something like this (scan name, age at scan, hemisphere):
 Then to process all scans:
 
 ```
-./pre_rotate_condor.sh config/ages.csv
+./pre_rotation_condor.sh config/ages.csv
 ```
 
 ## Alignment to Conte69 atlas

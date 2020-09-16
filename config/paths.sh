@@ -20,7 +20,7 @@ PATH=$FSLDIR/bin:$PATH
 
 # workbench is used for pre_rotation.sh
 export WORKBENCHHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/workbench
-PATH=$WORKBENCHHOME/bin:$PATH
+PATH=$WORKBENCHHOME/bin_linux64:$PATH
 
 # and we need MIRTK for registration
 export MIRTKHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
@@ -38,7 +38,7 @@ affinedir=$outdir/affineToConte
 to_process=$config/subjects.tsv
 
 # struct pipeline output we process
-indir=/vol/dhcp-derived-data/derived_jun20_recon07
+indir=/vol/dhcp-derived-data/derived_jun20_recon07/derivatives
 
 # schuh atlas we use as volumetric template space
 volumetric_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-jan2020

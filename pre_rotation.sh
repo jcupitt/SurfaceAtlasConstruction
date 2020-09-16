@@ -35,7 +35,7 @@ fi
 in_volume=${indir}/derivatives/sub-$subject/ses-$session/anat/sub-${subject}_ses-${session}_T2w_restore_brain.nii.gz
 in_sphere=${indir}/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sphere.surf.gii
 vol_template=$volumetric_atlas_dir/templates/t2w/t$week.nii.gz
-surf_transform=$surface_template_dir/week40.iter30.sphere.$hemi.dedrift.AVERAGE_removedAffine.surf.gii
+surf_transform=$codedir/rotational_transforms/week40_toFS_LR_rot.$hemi.txt
 intermediate_sphere=$(echo $in_sphere | sed 's/.surf.gii/tmp_rot.surf.gii/g')
 
 # the file we generate
@@ -43,8 +43,9 @@ out_dof=$outdir/volume_dofs/$subject-$session.dof
 out_doftxt=$(echo $out_dof | sed 's/\.dof/\.txt/g')
 out_sphere=$outdir/$subject-$session/${hemi_name}_sphere.rot.surf.gii
 
-mkdir -p $outdir/volume_dofs
 mkdir -p $outdir/
+mkdir -p $outdir/volume_dofs
+mkdir -p $outdir/$subject-$session
 
 if [ ! -f $out_doftxt ]; then
   run mirtk register $vol_template $in_volume \
@@ -61,7 +62,7 @@ run wb_command -surface-modify-sphere  \
   $intermediate_sphere 100 $intermediate_sphere -recenter
 
 run wb_command -surface-apply-affine \
-  $intermediate_sphere  $surf_transform  $out_sphere
+  $intermediate_sphere $surf_transform  $out_sphere
 
 run wb_command -surface-modify-sphere  \
   $out_sphere 100 $out_sphere -recenter
