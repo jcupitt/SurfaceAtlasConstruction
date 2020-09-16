@@ -106,6 +106,20 @@ and I put a copy of the latest one here:
 
 Need these too, add notes.
 
+## `subjects.tsv`
+
+This needs to list scan and age at scan, one per line. For example:
+
+```
+CC00507XX12-148202 42 
+```
+
+Generate this file from the structural pipeline's `combined.tsv` with:
+
+```
+./generate_subjects.sh combined.tsv config/subjects.tsv
+```
+
 ## Edit `config/paths.sh`
 
 You need to set the various variables to point to the right directories.
@@ -113,7 +127,12 @@ You need to set the various variables to point to the right directories.
 - Conte69 atlas
 - Struct pipeline output
 - MSM/FSL/Workbench/MIRTK binaries
-- Ages and names of volumes to process for the cluster scripts in `ages.csv`
+
+## Reset output area
+
+```
+rm -rf ../work/*
+```
 
 ## Pre-align surfaces
 
@@ -126,7 +145,13 @@ Test with something like this (scan name, age at scan, hemisphere):
 Then to process all scans:
 
 ```
-./pre_rotation_condor.sh config/ages.csv
+./pre_rotation_condor.sh config/subjects.tsv
+```
+
+Check progress:
+
+```
+condor_q
 ```
 
 ## Alignment to Conte69 atlas

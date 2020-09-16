@@ -1,31 +1,44 @@
 #!/bin/bash
 
-# Jelena Bozek, 2018
+# run with eg.:
+#   ./pre_rotation_condor.sh config/subjects.tsv
 
-# script registers all cases to the Conte69_fs_LR template which is setting
-# a convention for the initial template; this also helps to encourage the
-# L/R correspondence
+set -e
 
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
-type=AFFINEtoConte
+to_process=$1
+condor_spec=$outdir/tmp/pre_rotation.$$.condor
 
-for hemi in L R ; do
-  while IFS='' read -r line || [[ -n "$line" ]]; do
-    columns=($line)
-    source=${columns[0]}
-    age=${columns[1]}
-    week=${columns[2]}
-    echo $source
+mkdir -p $outdir/tmp
+mkdir -p $outdir/logs
 
-    sbatch \
-      -o $outdir/logdir/${source}_${hemi}_${type}.out \
-      -e $outdir/logdir/${source}_${hemi}_${type}.err \
-      -c 1 -p long \
-      $scripts/affine_to_Conte.sh $source $week $hemi
-  done < $to_process
-done
+echo generating tmp/$(basename $condor_spec) ...
+echo "# condor submit file for pre_rotation.sh" > $condor_spec 
+echo -n "# " > $condor_spec 
+date >> $condor_spec 
+cat >> $condor_spec <<EOF
+  Executable = pre_rotation.sh
+  Universe   = vanilla
+  Log        = $outdir/logs/\$(Process).condor.pre_rotation.log
+  error      = $outdir/logs/\$(Process).condor.pre_rotation.err
+EOF
 
-    
+while IFS='' read -r line || [[ -n "$line" ]]; do
+  columns=($line)
+  scan=${columns[0]}
+  age=${columns[1]}
 
+  if ! [[ $scan =~ (CC.*)-(.*) ]]; then
+    continue
+  fi
+
+  for hemi in L R; do
+    echo "arguments = $scan $age $hemi" >> $condor_spec
+    echo "Queue" >> $condor_spec
+    echo "" >> $condor_spec
+  done
+done < $to_process
+
+condor_submit $condor_spec
