@@ -154,6 +154,24 @@ Check progress:
 condor_q
 ```
 
+See why some processing failed:
+
+```
+condor_q -analyze
+```
+
+`State file handle` is the usual one and happens when a client hasn't been
+restarted since the server restarted.
+
+Remove the failed jobs:
+
+```
+condor_rm 183
+```
+
+And try running `pre_rotation_condor.sh` again (it will only resubmit jobs for
+images which did not generate).
+
 ## Alignment to Conte69 atlas
 
 Test like this:

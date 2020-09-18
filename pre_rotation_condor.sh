@@ -30,11 +30,21 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
   scan=${columns[0]}
   age=${columns[1]}
 
+  # skip lines in to_process which are not image specs
   if ! [[ $scan =~ (CC.*)-(.*) ]]; then
     continue
   fi
+  subject=${BASH_REMATCH[1]}
+  session=${BASH_REMATCH[2]}
 
   for hemi in L R; do
+    # has this job completed previously? test for the existence of the final
+    # file the script makes
+    out_sphere=$outdir/pre_rotation/$subject-$session/${hemi_name}_sphere.rot.surf.gii
+    if [ -f $out_sphere ]; then
+      continue
+    fi
+
     echo "arguments = $scan $age $hemi" >> $condor_spec
     echo "Queue" >> $condor_spec
     echo "" >> $condor_spec
