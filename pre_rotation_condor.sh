@@ -16,13 +16,13 @@ mkdir -p $outdir/logs
 
 echo generating tmp/$(basename $condor_spec) ...
 echo "# condor submit file for pre_rotation.sh" > $condor_spec 
-echo -n "# " > $condor_spec 
+echo -n "# " >> $condor_spec 
 date >> $condor_spec 
 cat >> $condor_spec <<EOF
-  Executable = pre_rotation.sh
-  Universe   = vanilla
-  Log        = $outdir/logs/\$(Process).condor.pre_rotation.log
-  error      = $outdir/logs/\$(Process).condor.pre_rotation.err
+Executable = pre_rotation.sh
+Universe   = vanilla
+Log        = $outdir/logs/\$(Process).condor.pre_rotation.log
+error      = $outdir/logs/\$(Process).condor.pre_rotation.err
 EOF
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
@@ -38,6 +38,12 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
   session=${BASH_REMATCH[2]}
 
   for hemi in L R; do
+    if [[ $hemi = L ]]; then
+      hemi_name=left
+    else
+      hemi_name=right
+    fi
+
     # has this job completed previously? test for the existence of the final
     # file the script makes
     out_sphere=$outdir/pre_rotation/$subject-$session/${hemi_name}_sphere.rot.surf.gii
@@ -45,9 +51,9 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
       continue
     fi
 
+    echo "" >> $condor_spec
     echo "arguments = $scan $age $hemi" >> $condor_spec
     echo "Queue" >> $condor_spec
-    echo "" >> $condor_spec
   done
 done < $to_process
 

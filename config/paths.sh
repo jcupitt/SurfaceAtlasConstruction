@@ -10,6 +10,10 @@ fi
 
 base=$codedir
 
+# used for error and logging messages
+# use "--" in case $0 starts with a "-"
+self=$(basename -- "$0" .sh)
+
 # config area 
 config=$base/config
 
@@ -33,8 +37,15 @@ affinedir=$outdir/affineToConte
 
 # set of file to process 
 # columns are
-# 	subject_id session_id age_at_scan
-# separated by whitespace (no commas) and no header line
+#
+# 	subject_id-session_id age_at_scan
+#
+# separated by whitespace (no commas) and no header line, eg.:
+#
+#   CC00692XX17-200301	42
+#   CC00382XX12-121700	43
+#
+# "age" is PMA in weeks rounded to the nearest week
 to_process=$config/subjects.tsv
 
 # struct pipeline output we process
@@ -54,13 +65,13 @@ mkdir -p $logdir
 run() {
 	cmd="$*"
 	echo running: $cmd
-	echo running: $cmd >> $logdir/$$.output.log
-	echo running: $cmd >> $logdir/$$.error.log
-	$cmd >> $logdir/$$.output.log 2>> $logdir/$$.error.log
+	echo running: $cmd >> $logdir/$self.$$.log
+	echo running: $cmd >> $logdir/$self.$$.err
+	$cmd >> $logdir/$self.$$.log 2>> $logdir/$self.$$.err
 	if [ $? != 0 ]; then
 		echo =====================
-		echo failed: $logdir/$$.error.log 
-		tail $logdir/$$.error.log
+		echo failed: $logdir/$self.$$.err
+		tail $logdir/$self.$$.err
 		exit 1
 	fi
 }
