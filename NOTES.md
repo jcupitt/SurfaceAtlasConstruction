@@ -136,10 +136,10 @@ rm -rf ../work/*
 
 ## Pre-align surfaces
 
-Test with something like this (scan name, age at scan, hemisphere):
+Test with something like this (job id, scan name, age at scan, hemisphere):
 
 ```
-./pre_rotation.sh CC00507XX12-148202 42 L
+./pre_rotation.sh 12 CC00507XX12-148202 42 L
 ```
 
 Then to process all scans:
@@ -160,9 +160,6 @@ See why some processing failed:
 condor_q -analyze
 ```
 
-`State file handle` is the usual one and happens when a client hasn't been
-restarted since the server restarted.
-
 Remove the failed jobs:
 
 ```
@@ -177,6 +174,6 @@ images which did not generate).
 Test like this:
 
 ```
-./affine_to_Conte.sh CC00507XX12-148202 42 L
+./affine_to_Conte.sh 12 CC00507XX12-148202 42 L
 ```
 

@@ -3,26 +3,50 @@
 # run with eg.:
 #   ./affine_to_Conte.sh CC00058XX13 43.2 L
 
+jid=$1 
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
-if [ $# -ne 3 ]; then
-  echo "usage: $0 source week hemi"
+if [ $# -ne 4 ]; then
+  echo "usage: $0 jid scan week hemi"
   exit 1
 fi
 
-source=$1 
-week=$2
-hemi=$3
+scan=$2 
+week=$3
+hemi=$4
 
-inmesh=${dir}/${source}/${source}.${hemi}.sphere.template-${week}.RIGID.recentred.rotatedToConte.surf.gii 
-refmesh=${atlasDir}/Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii
+if ! [[ $scan =~ (CC.*)-(.*) ]]; then
+  echo "bad scan $scan"
+  exit 1
+fi
+subject=${BASH_REMATCH[1]}
+session=${BASH_REMATCH[2]}
 
-indata=${DATAdir}/surfaces/${source}/workbench/${source}.${hemi}.sulc.native.shape.gii 
-refdata=${atlasDir}/Conte69.${hemi}.32k_fs_LR.shape.gii
+if ! [[ $hemi =~ L|R ]]; then
+  echo "bad hemi $hemi"
+  exit 1
+fi
+if [[ $hemi = L ]]; then
+  hemi_name=left
+else
+  hemi_name=right
+fi
 
-OutMesh=${source}-Conte69.${hemi}.sphere.AFFINE.surf.gii
-OutData=${source}-Conte69.${hemi}.sulc.AFFINE.func.gii
+in_mesh=$outdir/pre_rotation/$subject-$session/${hemi_name}_sphere.rot.surf.gii
+in_data=$indir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sulc.shape.gii
+
+# Jelena had Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii, but we only
+# have this available :( 
+ref_mesh=$conte_atlas_dir/Conte69.$hemi.sphere.32k_fs_LR.surf.gii
+ref_data=$conte_atlas_dir/Conte69.$hemi.32k_fs_LR.shape.gii
+
+out_base_dir=$outdir/affine_to_Conte/$subject-$session
+out_mesh=$out_base_dir/Conte69.${hemi}.sphere.AFFINE.surf.gii
+out_data=$out_base_dir/Conte69.${hemi}.sulc.AFFINE.func.gii
+
+mkdir -p $out_base_dir
+
 
 
 OutputTempFolder=${affinedir}/${source}/${source}_to_Conte69_$hemi

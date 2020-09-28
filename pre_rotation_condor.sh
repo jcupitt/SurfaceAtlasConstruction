@@ -52,7 +52,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
     fi
 
     echo "" >> $condor_spec
-    echo "arguments = $scan $age $hemi" >> $condor_spec
+    echo "arguments = \$(Process) $scan $age $hemi" >> $condor_spec
     echo "Queue" >> $condor_spec
   done
 done < $to_process

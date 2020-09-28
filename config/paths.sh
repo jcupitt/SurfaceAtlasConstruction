@@ -26,9 +26,10 @@ PATH=$FSLDIR/bin:$PATH
 export WORKBENCHHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/workbench
 PATH=$WORKBENCHHOME/bin_linux64:$PATH
 
-# and we need MIRTK for registration
+# and we need MIRTK for registration, plus all its libraries
 export MIRTKHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
 PATH=$MIRTKHOME/bin:$PATH
+export LD_LIBRARY_PATH=$MIRTKHOME/lib:LD_LIBRARY_PATH
 
 # write all output here
 outdir=/vol/dhcp-derived-data/surface-atlas-jcupitt/work
@@ -65,13 +66,13 @@ mkdir -p $logdir
 run() {
 	cmd="$*"
 	echo running: $cmd
-	echo running: $cmd >> $logdir/$self.$$.log
-	echo running: $cmd >> $logdir/$self.$$.err
-	$cmd >> $logdir/$self.$$.log 2>> $logdir/$self.$$.err
+	echo running: $cmd >> $logdir/$self.$jid.log
+	echo running: $cmd >> $logdir/$self.$jid.err
+	$cmd >> $logdir/$self.$jid.log 2>> $logdir/$self.$jid.err
 	if [ $? != 0 ]; then
 		echo =====================
-		echo failed: $logdir/$self.$$.err
-		tail $logdir/$self.$$.err
+		echo failed: $logdir/$self.$jid.err
+		tail $logdir/$self.$jid.err
 		exit 1
 	fi
 }
