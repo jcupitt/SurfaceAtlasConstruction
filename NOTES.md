@@ -177,3 +177,9 @@ Test like this:
 ./affine_to_Conte.sh 12 CC00507XX12-148202 42 L
 ```
 
+Then to process all scans:
+
+```
+./affine_to_Conte_condor.sh config/subjects.tsv
+```
+

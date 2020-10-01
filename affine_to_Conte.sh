@@ -47,29 +47,31 @@ out_data=$out_base_dir/Conte69.${hemi}.sulc.AFFINE.func.gii
 
 mkdir -p $out_base_dir
 
+# 1. MSM writes files to outdir
+# 2. it will keep adding + signs to log filename to get a unique name, but 
+#    this will not work reliably on NFS since file create is not atomic
+# 3. therefore we must run in /tmp and copy the result to NFS on completion
+tmp_dir=/tmp/$scan-$hemi.$jid.$$
+rm -rf $tmp_dir
+mkdir -p $tmp_dir
 
+cd $tmp_dir
 
-OutputTempFolder=${affinedir}/${source}/${source}_to_Conte69_$hemi
-rm -rf ${OutputTempFolder}
-mkdir -p ${OutputTempFolder}
-
-cd ${OutputTempFolder}
-
-echo "### Affine to Conte69, source = $source, week = $week"
-
-msm \
+run echo "### Affine to Conte69, source = $source, week = $week"
+run msm \
     --levels=1 \
     --conf=$config/config_strain_NEWSTRAIN_SPHERE_FS_LR_AFFINE \
-    --inmesh=${inmesh} \
-    --refmesh=${refmesh} \
-    --indata=${indata} \
-    --refdata=${refdata} \
-    --out=${OutputTempFolder}/${hemi}. \
+    --inmesh=${in_mesh} \
+    --refmesh=${ref_mesh} \
+    --indata=${in_data} \
+    --refdata=${ref_data} \
+    --out=$tmp_dir/$hemi- \
     --verbose
 
-cp  ${OutputTempFolder}/${hemi}.sphere.reg.surf.gii ${affinedir}/${source}/${OutMesh}
-cp  ${OutputTempFolder}/${hemi}.transformed_and_reprojected.func.gii ${affinedir}/${source}/${OutData}
-echo " done with affine"
+run cp $tmp_dir/$hemi-sphere.reg.surf.gii $out_mesh
+run cp $tmp_dir/$hemi-transformed_and_reprojected.func.gii $out_data
 
+run rm -rf $tmp_dir
 
+run echo "done with affine"
 
