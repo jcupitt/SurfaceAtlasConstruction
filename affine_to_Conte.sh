@@ -34,7 +34,7 @@ else
 fi
 
 in_mesh=$outdir/pre_rotation/$subject-$session/${hemi_name}_sphere.rot.surf.gii
-in_data=$indir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sulc.shape.gii
+in_data=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sulc.shape.gii
 
 # Jelena had Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii, but we only
 # have this available :( 

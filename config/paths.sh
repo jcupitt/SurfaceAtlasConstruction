@@ -50,7 +50,7 @@ affinedir=$outdir/affineToConte
 to_process=$config/subjects.tsv
 
 # struct pipeline output we process
-indir=/vol/dhcp-derived-data/derived_jun20_recon07/derivatives
+struct_pipeline_dir=/vol/dhcp-derived-data/derived_aug20_recon07/derivatives
 
 # schuh atlas we use as volumetric template space
 volumetric_atlas_dir=/vol/dhcp-derived-data/surface-atlas-jcupitt/schuh-atlas-jan2020

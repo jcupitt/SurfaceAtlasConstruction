@@ -183,3 +183,15 @@ Then to process all scans:
 ./affine_to_Conte_condor.sh config/subjects.tsv
 ```
 
+## Sucal depth alignment
+
+Now do initial msm using sulcal depth map to drive the registration; the
+batch script submits `msm_template_to_subjects_iterate.sh` to slurm. Script
+`msm_template_to_subjects_iterate.sh` is general registration script used
+throughout the template construction.
+
+```
+./dataConte_sulc_msm_subjects_to_Conte_condor.sh
+```
+
+

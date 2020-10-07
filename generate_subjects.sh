@@ -31,7 +31,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
   int_age_at_scan=$(printf %.0f "$age_at_scan")
 
-  in_volume=${indir}/sub-$subject/ses-$session/anat/sub-${subject}_ses-${session}_T2w_restore_brain.nii.gz
+  in_volume=$struct_pipeline_dir/sub-$subject/ses-$session/anat/sub-${subject}_ses-${session}_T2w_restore_brain.nii.gz
   if ! [ -f $in_volume ]; then
     echo no input volume for $subject-$session
     ((n_missing+=1))

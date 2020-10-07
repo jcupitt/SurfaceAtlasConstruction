@@ -27,7 +27,7 @@ for hemi in L R ; do
 	age=`echo $line | awk '{print $2}'`
 	week=`echo $line | awk '{print $3}'`
 	echo $source
-	
+
 	OutputRegFolder=${OutputTemplateFolder}/${source}
 	OutputTempFolder=${OutputRegFolder}/toConte_${source}_${hemi}_iter${iter}
 	mkdir -p $OutputTempFolder
