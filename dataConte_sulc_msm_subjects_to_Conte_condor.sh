@@ -49,11 +49,11 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
     # Jelena had Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii, but we 
     # only have this available :( 
     in_base_dir=$outdir/affine_to_Conte/$subject-$session
-    inmesh=$in_base_dir/Conte69.$hemi.sphere.AFFINE.surf.gii
+    in_mesh=$in_base_dir/Conte69.$hemi.sphere.AFFINE.surf.gii
     ref_mesh=$conte_atlas_dir/Conte69.$hemi.sphere.32k_fs_LR.surf.gii
 
     # guess: is this the right one?
-    nativedata=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sulc.shape.gii
+    native_data=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sulc.shape.gii
     ref_data=$conte_atlas_dir/Conte69.$hemi.32k_fs_LR.shape.gii
 
     out_base_dir=$outdir/subjectsToDataConteALL/$scan
@@ -72,10 +72,10 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
     echo "" >> $condor_spec
     echo "arguments = \$(Process) \
       $conf \
-      $inmesh \
+      $in_mesh \
       $ref_mesh \
-      $nativedata \
-      $refdata \
+      $native_data \
+      $ref_data \
       $out_base_dir \
       $out_mesh \
       $out_data \

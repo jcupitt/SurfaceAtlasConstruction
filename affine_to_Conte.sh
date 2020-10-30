@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run with eg.:
-#   ./affine_to_Conte.sh CC00058XX13 43.2 L
+#   ./affine_to_Conte.sh 12 CC00058XX13 43.2 L
 
 jid=$1 
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

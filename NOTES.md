@@ -24,7 +24,7 @@ Instead, run a shell and scp out:
 docker run --rm -it msm:latest /bin/bash
 cd /usr/local
 tar cfz ~/fsl.tar.gz fsl
-scp ~/fsl.tar.gz jcupitt@yishui
+scp ~/fsl.tar.gz jcupitt@yishui.doc.ic.ac.uk:
 ^D
 ```
 
@@ -48,7 +48,7 @@ And get the binary out with scp:
 docker run --rm -it workbench:latest /bin/bash
 cd /usr/local
 tar cfz workbench.tar.gz workbench
-scp workbench.tar.gz jcupitt@yishui:
+scp workbench.tar.gz jcupitt@yishui.doc.ic.ac.uk:
 ^D
 ```
 
@@ -71,7 +71,7 @@ And get the binary out with scp:
 docker run --rm -it mirtk:xenial /bin/bash
 cd /usr/local
 tar cfz mirtk.tar.gz mirtk
-scp mirtk.tar.gz jcupitt@yishui:
+scp mirtk.tar.gz jcupitt@yishui.doc.ic.ac.uk:
 ^D
 ```
 
@@ -191,7 +191,9 @@ batch script submits `msm_template_to_subjects_iterate.sh` to slurm. Script
 throughout the template construction.
 
 ```
-./dataConte_sulc_msm_subjects_to_Conte_condor.sh
+./dataConte_sulc_msm_subjects_to_Conte_condor.sh config/subjects.tsv
 ```
 
+Fails with mismatch, possible because we are not using the right sulc start
+surface. Rebuilt MSM with more dbg logging, testing soon.
 
