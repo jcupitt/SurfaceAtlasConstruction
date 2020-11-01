@@ -50,7 +50,8 @@ in_volume=$struct_pipeline_dir/sub-$subject/ses-$session/anat/sub-${subject}_ses
 in_sphere=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sphere.surf.gii
 vol_template=$volumetric_atlas_dir/templates/t2w/t$schuh_week.nii.gz
 surf_transform=$codedir/rotational_transforms/week40_toFS_LR_rot.$hemi.txt
-intermediate_sphere=$(echo $in_sphere | sed 's/.surf.gii/tmp_rot.surf.gii/g')
+
+intermediate_sphere=$outdir/pre_rotation/$subject-$session/${hemi_name}_sphere.tmp_rot.surf.gii
 
 # the file we generate
 out_dof=$outdir/volume_dofs/$subject-$session.dof
@@ -80,4 +81,3 @@ run wb_command -surface-apply-affine \
 run wb_command -surface-modify-sphere  \
   $out_sphere 100 $out_sphere -recenter
 
-rm $intermediate_sphere

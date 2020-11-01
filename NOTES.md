@@ -148,6 +148,8 @@ Then to process all scans:
 ./pre_rotation_condor.sh config/subjects.tsv
 ```
 
+If you see an auth error, try rerunning `kinit`. 
+
 Check progress:
 
 ```
@@ -188,12 +190,28 @@ Then to process all scans:
 Now do initial msm using sulcal depth map to drive the registration; the
 batch script submits `msm_template_to_subjects_iterate.sh` to slurm. Script
 `msm_template_to_subjects_iterate.sh` is general registration script used
-throughout the template construction.
+throughout template construction.
 
 ```
 ./dataConte_sulc_msm_subjects_to_Conte_condor.sh config/subjects.tsv
 ```
 
-Fails with mismatch, possible because we are not using the right sulc start
-surface. Rebuilt MSM with more dbg logging, testing soon.
+First from generated condor script:
 
+```
+./msm_template_to_subjects_iterate.sh \
+  12 \
+  /vol/dhcp-derived-data/surface-atlas-jcupitt/SurfaceAtlasConstruction/config/config_strain_NEWSTRAIN_SPHERE_LONGITUDINAL_new \
+  /vol/dhcp-derived-data/surface-atlas-jcupitt/work/affine_to_Conte/CC00692XX17-200301/Conte69.L.sphere.AFFINE.surf.gii \
+  /vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k/Conte69.L.sphere.32k_fs_LR.surf.gii \
+  /vol/dhcp-derived-data/derived_aug20_recon07/derivatives/sub-CC00692XX17/ses-200301/anat/Native/sub-CC00692XX17_ses-200301_left_sulc.shape.gii \
+  /vol/dhcp-derived-data/surface-atlas-jcupitt/Conte-surface/MNINonLinear/fsaverage_LR32k/Conte69.L.32k_fs_LR.shape.gii \
+  /vol/dhcp-derived-data/surface-atlas-jcupitt/work/subjectsToDataConteALL/CC00692XX17-200301 \
+  CC00692XX17-200301-Conte69.L.sphere.init.sulc.surf.gii \
+  CC00692XX17-200301-Conte69.L.init.sulc.func.gii \
+  L
+```
+
+Takes about 40m to run.
+
+Currently on 845 of 1642 scans.

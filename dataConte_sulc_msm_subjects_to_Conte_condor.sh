@@ -65,7 +65,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
     # has this job completed previously? test for the existence of the final
     # file the script makes
-    if [ -f $out_dir/$out_data ]; then
+    if [ -f $out_base_dir/$out_data ]; then
       continue
     fi
 
@@ -84,4 +84,4 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
   done
 done < $to_process
 
-# condor_submit $condor_spec
+condor_submit $condor_spec

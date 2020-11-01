@@ -32,7 +32,7 @@ if [ $# -lt 8 ]; then
   exit 1
 fi
 
-set -x
+# set -x
 set -e
 
 conf=$1
