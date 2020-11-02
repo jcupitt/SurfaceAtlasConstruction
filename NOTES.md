@@ -21,7 +21,7 @@ exec and two tars, but that fails over NFS, frustratingly.
 Instead, run a shell and scp out:
 
 ```
-docker run --rm -it msm:latest /bin/bash
+docker run --rm -it jcupitt/msm:latest /bin/bash
 cd /usr/local
 tar cfz ~/fsl.tar.gz fsl
 scp ~/fsl.tar.gz jcupitt@yishui.doc.ic.ac.uk:
@@ -187,16 +187,11 @@ Then to process all scans:
 
 ## Sucal depth alignment
 
-Now do initial msm using sulcal depth map to drive the registration; the
-batch script submits `msm_template_to_subjects_iterate.sh` to slurm. Script
+Now do initial msm using sulcal depth map to drive the registration.
 `msm_template_to_subjects_iterate.sh` is general registration script used
 throughout template construction.
 
-```
-./dataConte_sulc_msm_subjects_to_Conte_condor.sh config/subjects.tsv
-```
-
-First from generated condor script:
+Test with eg.:
 
 ```
 ./msm_template_to_subjects_iterate.sh \
@@ -214,4 +209,26 @@ First from generated condor script:
 
 Takes about 40m to run.
 
-Currently on 845 of 1642 scans.
+Run on all scans with:
+
+```
+./dataConte_sulc_msm_subjects_to_Conte_condor.sh config/subjects.tsv
+```
+
+## Resample curvature
+
+Next, resample curvature after initial registration. Test like this:
+
+```
+./dataConte_curv_resample_after_msm_init.sh 12 CC00507XX12-148202 42 L
+```
+
+Run on all scans like this:
+
+```
+./dataConte_curv_resample_after_msm_init_condor.sh config/subjects.tsv
+```
+
+There scans fail, not investigated why.
+
+
