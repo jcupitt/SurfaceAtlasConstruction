@@ -31,6 +31,11 @@ export MIRTKHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
 PATH=$MIRTKHOME/bin:$PATH
 export LD_LIBRARY_PATH=$MIRTKHOME/lib:LD_LIBRARY_PATH
 
+# we use anaconda for some scripts
+# run "conda init" if you need conda's shell functions
+export PYTHONHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/anaconda3
+eval "$($PYTHONHOME/bin/conda shell.bash hook)" 
+
 # write all output here
 outdir=/vol/dhcp-derived-data/surface-atlas-jcupitt/work
 logdir=$outdir/logs

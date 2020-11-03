@@ -81,6 +81,15 @@ And untar somewhere. I put it here:
 /vol/dhcp-derived-data/surface-atlas-jcupitt/mirtk
 ```
 
+## Anaconda
+
+The pipeline uses some Python. The simplest way to get this to run across
+condor is to use anaconda:
+
+https://www.anaconda.com/products/individual
+
+I installed to `/vol/dhcp-derived-data/surface-atlas-jcupitt/anaconda3`.
+
 ## Conte69 atlas
 
 There's a copy of the complete atlas in:
@@ -229,6 +238,33 @@ Run on all scans like this:
 ./dataConte_curv_resample_after_msm_init_condor.sh config/subjects.tsv
 ```
 
-There scans fail, not investigated why.
+Three scans fail, not investigated why.
+
+## Generate weights
+
+For each week, we need to pick a set of scans to average for that week, plus a
+weighting for each one. The weights are chosen to give effectively the same
+number of inputs to each week: a large sigma for weeks with few scans (so more
+are averaged), a small sigma for weeks with many scans.
+
+```
+./generate_weights.py config/subjects.tsv
+```
+
+## Average sulc and curv
+
+Use `python.sh` to run Python scripts, eg.:
+
+```
+python.sh something.py 12 arg1 arg2
+```
+
+Get average `*init.sulc` and `*init.curv`. This batch script calls 
+`dataConte_average_after_msm.py`.
+
+```
+./adaptive_dataConte_average_after_msm_and_resample_condor.sh config/subjects.tsv
+```
+
 
 
