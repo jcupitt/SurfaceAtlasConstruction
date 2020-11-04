@@ -11,4 +11,5 @@ codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
 shift
+echo PYTHONHOME = $PYTHONHOME
 run python $*
