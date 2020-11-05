@@ -1,4 +1,4 @@
-#!/usr/bin/env /vol/medic01/users/ecr05/anaconda3/bin/python
+#!/usr/bin/env python3
 
 """
 Created on Tue May 23 12:30:54 2017
@@ -8,71 +8,58 @@ Created on Tue May 23 12:30:54 2017
 
 # script for calculating average of gifti curvature or sulcal depth maps
 
-import numpy as np
 import sys
-from sys import argv
-
-import nibabel as nib
-import nibabel.gifti as nibgif
 import os
+import csv
+
+import numpy as np
+import nibabel as nib
 
 def usage():
-    print ("Usage: " + argv[0] + " <folder where data metrics are> <weightsFile> <hemisphere> <output template folder> <output filename> <data: curv or sulc> <list of subjects>")
+    print(f"Usage: {sys.argv[0]} <folder where data metrics are> " +
+           "<weights_file> <hemisphere> <output template folder> " +
+           "<output filename> <data: curv or sulc>")
     sys.exit(1)
 
-if len(argv) < 2:
+if len(sys.argv) < 2:
     usage()
 
-print (argv)
+in_dir = sys.argv[1]            # eg. work/affine_to_Conte
+weights_file = sys.argv[2]      # config/weights/w28.csv
+hemi = sys.argv[3]              # L
+out_dir = sys.argv[4]           # work/adaptive_subjectsToDataConteALL
+outfilename = sys.argv[5]       # week28.init.curv.L.AVERAGE.shape.gii
+data_type = sys.argv[6]         # curv
 
-inFolder  = argv[1]  # dirConte=/vol/medic01/users/jbozek/MSMtemplate/affineToConte
-weightsFile = argv[2]  # weights=/vol/medic01/users/jbozek/new_weights/results/etc-${kernel}/kernel_sigma=${sigma}/weights_t=${targetage}.csv
-hemi = argv[3]
-dirTemplate= argv[4]  #/vol/medic01/users/jbozek/MSMtemplate/templates/${kernel}_sigma${sigma}_week${targetage}
-outfilename = argv[5]  # outfilename="week" + str(targetage) + ".iter0.ico7.sulc." + str(hemi) + "AVERAGE.shape.gii"
-data=argv[6]  # can be sulc or curv
-mylist=argv[7]
+total_data = np.array([0])
+total_weight = 0
 
-myiter=0
-#inFolder='/Users/jelena/radovi/2017_MSMatlasConstr/python_labels_curv/'
-#weightsFile='/Users/jelena/radovi/2017_MSMatlasConstr/python_labels_curv/weights_t=36_copy.csv'
-#hemi='L'
-#targetage=36
+with open(weights_file, 'r') as f:  
+    for row in csv.reader(f, delimiter='\t'):
+        scan = row[0]
+        weight = float(row[1])
 
-w=0
-suma=[0]
-suma= np.array(suma)
-print (suma)
+        filename = f"{in_dir}/{scan}/{scan}-Conte69.{hemi}.init.{data_type}.func.gii"
+        if not os.path.isfile(filename):
+            print(f"{filename}: not found, skipping")
+            continue
+        if os.path.getsize(filename) == 0:
+            print(f"{filename}: zero length file, skipping")
+            continue
 
+        print(f"loading {scan} ...")
+        gii = nib.load(filename)
+        data = gii.darrays[0].data
 
-with open (weightsFile, 'rt') as f:  
-    for line in f: 
-        text= line.split(" ")
-        source= text[0]
-        weight= float(text[1])
-
-        print (source)
-        print (weight)
-
-        filename=str(source) + "/" + str(source) + "-Conte69." + str(hemi) + ".init." + str(data) + ".func.gii"
-        giiFilename=os.path.join(inFolder, filename)
-
-        print (giiFilename)
-        
-        giiFile=nibgif.giftiio.read(giiFilename)
-        dataSulc=giiFile.darrays[0].data
-
-        suma=weight * dataSulc + suma
-
-        print(suma)
-        w = w + weight
+        # mix of float and int means numpy won't let us use += here
+        total_data = total_data + weight * data
+        total_weight += weight
  
-average=suma/w
-print(average)
+average = total_data / total_weight
 
-# just using input file's structure for having that structure in the new file that contains averaged data
-giiFile.darrays[0].data=np.float32(average)
+# reuse the file's structure for the new averaged data file
+gii.darrays[0].data = np.float32(average)
 
-outfile=    os.path.join(dirTemplate, outfilename)
-nib.save(giiFile,outfile)
+print(f"saving {outfilename} ...")
+nib.save(gii, f"{out_dir}/{outfilename}")
 

@@ -224,6 +224,16 @@ Run on all scans with:
 ./dataConte_sulc_msm_subjects_to_Conte_condor.sh config/subjects.tsv
 ```
 
+MSM can fail during processing leaving a 0 length output file. Find and remove
+these with:
+
+```
+cd work/subjectsToDataConteALL
+find . -type f -size 0c -exec rm {} \;
+```
+
+then re-run this stage.
+
 ## Resample curvature
 
 Next, resample curvature after initial registration. Test like this:
@@ -259,12 +269,21 @@ Generates `config/weights/w41.csv` etc.
 
 ## Average sulc and curv
 
-Get average `*init.sulc` and `*init.curv`. This batch script calls 
-`dataConte_average_after_msm.py`.
+Compute average `*init.sulc` and `*init.curv` for each week. This 
+script runs `dataConte_average_after_msm.py`.
 
 ```
 ./adaptive_dataConte_average_after_msm_and_resample_condor.sh config/subjects.tsv
 ```
 
+The `weights/` CSVs will list scans which don't exist, so don't worry too much
+about messages re. missing files.
 
+## Iter 0
+
+Script runs (on slurm) msm registration using curvature, iter=0; it submits
+jobs `msm_template_to_subjects_iterate.sh` to slurm and when done it averages
+all data with `average_data_after_reverse_msm_and_resampling.py`.
+
+    ./adaptive_dataConte_toConte_iter0_msm_resample_average.bat
 

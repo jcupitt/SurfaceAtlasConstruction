@@ -75,7 +75,7 @@ if [ -e "$transmesh" ] ; then
 
 else 
   run echo "no trans mesh"
-  msm \
+  run msm \
     --levels=3 \
     --conf=$conf \
     --inmesh=$inmesh \
