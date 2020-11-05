@@ -50,7 +50,13 @@ for data in "curv" "sulc" ; do
       fi
 
       echo "" >> $condor_spec
-      echo "arguments = \$(Process) $codedir/dataConte_average_after_msm.py $in_dir $weights $hemi $out_base $out_file $data" >> $condor_spec
+      echo "arguments = \$(Process) $codedir/dataConte_average_after_msm.py \
+        $in_dir \
+        $weights \
+        $hemi \
+        $out_base \
+        $out_file \
+        $data" >> $condor_spec
       echo "Queue" >> $condor_spec
     done
   done

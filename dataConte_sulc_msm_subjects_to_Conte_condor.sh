@@ -15,7 +15,7 @@ mkdir -p $outdir/tmp
 mkdir -p $outdir/logs
 
 echo generating tmp/$(basename $condor_spec) ...
-echo "# condor submit file for pre_rotation.sh" > $condor_spec 
+echo "# condor submit file for dataConte_sulc_msm_subjects_to_Conte" > $condor_spec 
 echo -n "# " >> $condor_spec 
 date >> $condor_spec 
 cat >> $condor_spec <<EOF

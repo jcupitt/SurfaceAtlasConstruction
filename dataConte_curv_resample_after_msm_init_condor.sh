@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run with eg.:
-#   ./affine_to_Conte_condor.sh config/subjects.tsv
+#   ./dataConte_curv_resample_after_msm_init_condor.sh config/subjects.tsv
 
 set -e
 
