@@ -271,7 +271,8 @@ about messages re. missing files.
 
 ## Iterate
 
-msm registration using curvature, iter=0, then resample 
+msm registration using curvature, iter=0, then resample. This fetches the set
+of scans to process from the weights files.
 
 ```
 ./adaptive_dataConte_toConte_iter0_msm_resample_condor.sh 

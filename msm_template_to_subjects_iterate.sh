@@ -26,13 +26,12 @@ codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 
 # last two optional
-echo nargs = $#
 if [ $# -lt 8 ]; then
   echo "usage: $0 jid ..."
   exit 1
 fi
 
-# set -x
+set -x
 set -e
 
 conf=$1
@@ -44,8 +43,8 @@ out_dir=$6
 out_mesh=$7
 out_data=$8
 hemi=$9
-output=$10
-transmesh=$11
+output=${10}
+transmesh=${11}
 
 # 1. MSM writes files to outdir
 # 2. it will keep adding + signs to log filename to get a unique name, but 
@@ -58,10 +57,8 @@ cd $tmp_dir
 
 run echo "### Doing nonlinear MSM  ###"
 
-trans=""
 if [ -e "$transmesh" ] ; then
   run echo "transmesh exists"
-
   run msm \
     --levels=3 \
     --conf=${conf} \
@@ -87,14 +84,15 @@ else
 
 fi
 
+mkdir -p $out_dir
 cp $tmp_dir/$hemi.sphere.reg.surf.gii $out_dir/$out_mesh
 cp $tmp_dir/$hemi.transformed_and_reprojected.func.gii $out_dir/$out_data
 echo "done with msm"
-echo "output mesh is " $out_mesh
+echo "output mesh is $out_mesh"
 echo ""
 
 if [ -e "$transmesh" ] ; then
-  echo "resample output data"
+  run echo "resample output data"
   run msmresample $out_dir/$out_mesh $output \
     -project $refmesh \
     -labels $indata \

@@ -59,7 +59,7 @@ for week in {28..44}; do
 
       conf=$codedir/config/config_strain_NEWSTRAIN_SPHERE_LONGITUDINAL_new
 
-      in_mesh=$outdir/affine_to_Conte/$scan/$scan-Conte69.$hemi.sphere.AFFINE.surf.gii
+      in_mesh=$outdir/affine_to_Conte/$scan/Conte69.$hemi.sphere.AFFINE.surf.gii
       # Jelena had Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii, but we 
       # only have this available :( 
       ref_mesh=$conte_atlas_dir/Conte69.$hemi.sphere.32k_fs_LR.surf.gii
@@ -70,7 +70,7 @@ for week in {28..44}; do
 
       out_base_dir=$outdir/adaptive_subjectsToDataConteALL/${scan}_week$week
 			out_mesh=$scan-Conte69.$hemi.sphere.$data.iter$iter.surf.gii
-			out_data=$source-Conte69.$hemi.$data.iter$iter.func.gii
+			out_data=$scan-Conte69.$hemi.$data.iter$iter.func.gii
 
       # base name for the resampled data
 			output_resampled=$out_base_dir/$scan.$hemi.curv.iter$iter.resampled 
@@ -100,4 +100,4 @@ for week in {28..44}; do
   done < $weights
 done
 
-echo condor_submit $condor_spec
+condor_submit $condor_spec
