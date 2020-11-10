@@ -94,7 +94,7 @@ for kernel in adaptive ; do # adaptive fixed; do
 
 
 		jobidMSM=`sbatch  $jobhold  --array=0-$arrayjobID $sbatchFile  | sed 's/Submitted batch job //g'`
-
+		
 		outfilename="week${week}.iter${iter}.${data}.${hemi}.AVERAGE.shape.gii"
 
 		jobidAvdCurv=`sbatch  -d $jobidMSM -J ${iter}AVG${week}${hemi}${data} -o ${outdir}/logdir/${week}_iter${iter}_${hemi}_avg_${data}.out -e ${outdir}/logdir/${week}_iter${iter}_${hemi}_avg_${data}.err -c 1 --mem=2G -p short ${Scripts}/average_data_after_reverse_msm_and_resampling.py $OutputTemplateFolder $weights $hemi  $outfilename $data $list $iter $week | sed 's/Submitted batch job //g'`

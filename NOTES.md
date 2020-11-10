@@ -278,3 +278,11 @@ of scans to process from the weights files.
 ./adaptive_dataConte_toConte_iter0_msm_resample_condor.sh 
 ```
 
+Average the resampled surfaces. This script runs
+`average_data_after_reverse_msm_and_resampling.py`.
+
+```
+./adaptive_dataConte_average_after_reverse_msm_and_resampling_condor.sh
+```
+
+
