@@ -35,8 +35,6 @@ else
   hemi_name=right
 fi
 
-mkdir -p $outdir/logdir
-
 out_base_dir=$outdir/subjectsToDataConteALL/$scan
 
 # Jelena had Conte69.${hemi}.sphere.32k_fs_LR_recentred.surf.gii, but we only

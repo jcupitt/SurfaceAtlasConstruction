@@ -87,6 +87,7 @@ fi
 mkdir -p $out_dir
 cp $tmp_dir/$hemi.sphere.reg.surf.gii $out_dir/$out_mesh
 cp $tmp_dir/$hemi.transformed_and_reprojected.func.gii $out_dir/$out_data
+rm -rf $tmp_dir
 echo "done with msm"
 echo "output mesh is $out_mesh"
 echo ""
@@ -98,3 +99,4 @@ if [ -e "$transmesh" ] ; then
     -labels $indata \
     -adap_bary
 fi
+

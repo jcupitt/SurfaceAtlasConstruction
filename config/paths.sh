@@ -33,8 +33,9 @@ export LD_LIBRARY_PATH=$MIRTKHOME/lib:LD_LIBRARY_PATH
 
 # we use anaconda for some scripts
 # run "conda init" if you need conda's shell functions
-export PYTHONHOME=/vol/dhcp-derived-data/surface-atlas-jcupitt/anaconda3
-eval "$($PYTHONHOME/bin/conda shell.bash hook)" 
+# don't use PYTHONHOME, it has a special meaning for conda
+export MY_PY=/vol/dhcp-derived-data/surface-atlas-jcupitt/anaconda3
+eval "$($MY_PY/bin/conda shell.bash hook)" 
 
 # write all output here
 outdir=/vol/dhcp-derived-data/surface-atlas-jcupitt/work

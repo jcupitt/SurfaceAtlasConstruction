@@ -77,8 +77,8 @@ for week in {28..44}; do
 			transmesh=$outdir/subjectsToDataConteALL/$scan/$scan-Conte69.$hemi.sphere.init.sulc.surf.gii
 
       # has this job completed previously? test for the existence of the final
-      # file the script makes
-      if [ -f $output_resampled ]; then
+      # file the script makes in transmesh mode
+      if [ -f $output_resampled.func.gii ]; then
         continue
       fi
 
