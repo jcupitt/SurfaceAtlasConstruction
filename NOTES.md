@@ -285,4 +285,11 @@ Average the resampled surfaces. This script runs
 ./adaptive_dataConte_average_after_reverse_msm_and_resampling_condor.sh
 ```
 
+And use `wb_command` to relabel the structures.
+
+```
+./adaptive_dataConte_relabel_condor.sh
+```
+
+
 
