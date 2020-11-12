@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run with eg.:
-#   ./adaptive_dataConte_average_after_reverse_msm_and_resampling_condor.sh
+#   ./adaptive_dataConte_average_after_reverse_msm_and_resampling_condor.sh 0
 
 set -e
 
@@ -9,7 +9,7 @@ codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 script=average_data_after_reverse_msm_and_resampling
 
-to_process=$1
+iter=$1
 condor_spec=$outdir/tmp/$script.$$.condor
 in_dir=$outdir/adaptive_subjectsToDataConteALL
 
@@ -30,7 +30,7 @@ EOF
 for hemi in L R; do
   for week in {28..44}; do
     weights=$codedir/config/weights/w$week.csv
-    out_file=week$week.iter0.curv.$hemi.AVERAGE.shape.gii
+    out_file=week$week.iter$iter.curv.$hemi.AVERAGE.shape.gii
 
     # has this job completed previously? test for the existence of the final
     # file the script makes
@@ -45,7 +45,7 @@ for hemi in L R; do
       $hemi  \
       $out_file \
       curv \
-      0 \
+      $iter \
       $week " >> $condor_spec
     echo "Queue" >> $condor_spec
   done
