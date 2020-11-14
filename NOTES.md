@@ -269,13 +269,13 @@ script runs `dataConte_average_after_msm.py`.
 The `weights/` CSVs will list scans which don't exist, so don't worry too much
 about messages re. missing files.
 
-## Build iter0
+## Iterate
 
-msm registration using curvature, iter=0, then resample. This fetches the set
+msm registration using curvature then resample. This fetches the set
 of scans to process from the weights files.
 
 ```
-./adaptive_dataConte_toConte_iter0_msm_resample_condor.sh 
+./adaptive_dataConte_toConte_iter_msm_resample_condor.sh 0
 ```
 
 Average the resampled surfaces. This script runs
@@ -291,28 +291,11 @@ And use `wb_command` to relabel the structures.
 ./adaptive_dataConte_relabel_condor.sh 0
 ```
 
-## Iterate
+And loop!
 
-msm registration using curvature then resample. This fetches the set
-of scans to process from the weights files.
-
-```
-./adaptive_dataConte_toConte_iter_msm_resample_condor.sh 1
-```
-
-Average the resampled surfaces. This script runs
-`average_data_after_reverse_msm_and_resampling.py`.
-
-```
-./adaptive_dataConte_average_after_reverse_msm_and_resampling_condor.sh 1
-```
-
-And use `wb_command` to relabel the structures.
-
-```
-./adaptive_dataConte_relabel_condor.sh 1
-```
-
+Iterate perhaps 8 times. Check the diagnostics from
+`adaptive_dataConte_toConte_iter_msm_resample_condor.sh` each time to make
+sure none are being dropped.
 
 
 

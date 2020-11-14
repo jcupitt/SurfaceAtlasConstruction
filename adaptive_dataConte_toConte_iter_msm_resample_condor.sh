@@ -30,19 +30,18 @@ EOF
 
 # these don't change
 data="curv"
-kernel=adaptive
-sigma=1
 
-if (( iter < 1 )); then
-  echo "iter must be greater than 0"
+if (( iter < 0 )); then
+  echo "iter must be greater than or equal to 0"
   exit 1
 fi
-# set -e before this line will terminate the script if iter == 1
 (( prev_iter = iter - 1 ))
 
-# can't have this at the top
-# set -x
-set -e
+n_to_process=0
+n_missing_prior=0
+n_missing_affine_prior=0
+n_previously_completed=0
+n_submitted=0
 
 for week in {28..44}; do
   weights=$codedir/config/weights/w${week}.csv
@@ -60,6 +59,8 @@ for week in {28..44}; do
     session=${BASH_REMATCH[2]}
 
     for hemi in L R; do
+      (( n_to_process += 1 ))
+
       if [[ $hemi = L ]]; then
         hemi_name=left
       else
@@ -76,22 +77,43 @@ for week in {28..44}; do
 
       # guess: is this the right one?
       native_data=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_curvature.shape.gii
-			ref_data=$outdir/adaptive_subjectsToDataConteALL/week${week}.iter$prev_iter.$data.$hemi.AVERAGE.shape.gii
+      if [ $iter -eq 0 ]; then
+        ref_data=$outdir/adaptive_subjectsToDataConteALL/week$week.init.${data}.${hemi}.AVERAGE.shape.gii 
+      else
+        ref_data=$outdir/adaptive_subjectsToDataConteALL/week${week}.iter$prev_iter.$data.$hemi.AVERAGE.shape.gii
+      fi
 
 			out_mesh=$scan-Conte69.$hemi.sphere.$data.iter$iter.surf.gii
 			out_data=$scan-Conte69.$hemi.$data.iter$iter.func.gii
 
       # base name for the resampled data
 			output_resampled=$out_base_dir/$scan.$hemi.curv.iter$iter.resampled 
-			transmesh=$out_base_dir/$scan-Conte69.$hemi.sphere.$data.iter$prev_iter.surf.gii
+      if [ $iter -eq 0 ]; then
+        transmesh=$outdir/subjectsToDataConteALL/$scan/$scan-Conte69.$hemi.sphere.init.sulc.surf.gii
+      else
+        transmesh=$out_base_dir/$scan-Conte69.$hemi.sphere.$data.iter$prev_iter.surf.gii
+      fi
+
+      # missing prior iteration?
+			if [ ! -f $ref_data ]; then
+        (( n_missing_prior += 1 ))
+        continue
+      fi
+
+      # missing affine_to_conte
+      if [ ! -f $in_mesh ]; then
+        (( n_missing_affine_prior += 1 ))
+        continue
+      fi
 
       # has this job completed previously? test for the existence of the final
       # file the script makes in transmesh mode
       if [ -f $output_resampled.func.gii ]; then
-        echo $output_resampled.func.gii exists
+        (( n_previously_completed += 1 ))
         continue
       fi
 
+      (( n_submitted += 1 ))
       echo "" >> $condor_spec
       echo "arguments = \$(Process) \
         $conf \
@@ -110,4 +132,22 @@ for week in {28..44}; do
   done < $weights
 done
 
-condor_submit $condor_spec
+if [ $n_to_process -gt 0 ]; then
+  echo "scans to process: $n_to_process"
+fi
+if [ $n_missing_prior -gt 0 ]; then
+  echo "skipped due to missing prior iterations: $n_missing_prior"
+fi
+if [ $n_missing_affine_prior -gt 0 ]; then
+  echo "skipped due to missing affines: $n_missing_affine_prior"
+fi
+if [ $n_previously_completed -gt 0 ]; then
+  echo "previously completed: $n_previously_completed"
+fi
+if [ $n_submitted -gt 0 ]; then
+  echo "submitted: $n_submitted"
+fi
+
+if [ $n_submitted -gt 0 ]; then
+  condor_submit $condor_spec
+fi
