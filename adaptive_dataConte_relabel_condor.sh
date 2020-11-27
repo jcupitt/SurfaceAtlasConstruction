@@ -9,7 +9,6 @@ codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 script=adaptive_dataConte_relabel
 
-to_process=$1
 condor_spec=$outdir/tmp/$script.$$.condor
 in_dir=$outdir/adaptive_subjectsToDataConteALL
 

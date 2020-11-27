@@ -297,6 +297,23 @@ Iterate perhaps 8 times. Check the diagnostics from
 `adaptive_dataConte_toConte_iter_msm_resample_condor.sh` each time to make
 sure none are being dropped.
 
+Check for 0 length files at each point too, esp. after the average step.
+
+
+## Warp and average
+
+When all iterations have finished, apply the final warps to all surfaces:
+
+```
+./adaptive_dataConte_final_warp_condor.sh 7
+```
+
+Then average and relabel.
+
+```
+```
+
+
 
 
 
