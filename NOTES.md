@@ -314,6 +314,13 @@ Then average and relabel.
 ./adaptive_dataConte_average_and_relabel.sh 7
 ```
 
+# Dedrift
+
+Dedrift the surfaces. Uses the weights CSV. 7 is the final iter.
+
+```
+dataConte_dedrift_condor.sh 7
+```
 
 
 

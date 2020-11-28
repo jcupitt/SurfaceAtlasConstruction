@@ -36,9 +36,9 @@ for hemi in L R; do
   for week in {28..44}; do
     out_file=week$week.iter$iter.curv.$hemi.AVERAGE.shape.gii
 
-		if [ $hemi = L ]; then 	
+		if [ $hemi == L ]; then 	
       structure=CORTEX_LEFT			
-		elif [ $hemi = R ]; then  
+		elif [ $hemi == R ]; then  
       structure=CORTEX_RIGHT
 		fi
 
