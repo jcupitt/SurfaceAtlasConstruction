@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run with eg.:
-#   ./adaptive_dataConte_relabel_condor.sh
+#   ./adaptive_dataConte_relabel_condor.sh 6
 
 set -e
 
@@ -9,8 +9,14 @@ codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
 script=adaptive_dataConte_relabel
 
+iter=$1
 condor_spec=$outdir/tmp/$script.$$.condor
 in_dir=$outdir/adaptive_subjectsToDataConteALL
+
+if (( iter < 0 )); then
+  echo "iter must be greater than or equal to 0"
+  exit 1
+fi
 
 mkdir -p $outdir/tmp
 mkdir -p $outdir/logs
@@ -28,7 +34,7 @@ EOF
 
 for hemi in L R; do
   for week in {28..44}; do
-    out_file=week$week.iter0.curv.$hemi.AVERAGE.shape.gii
+    out_file=week$week.iter$iter.curv.$hemi.AVERAGE.shape.gii
 
 		if [ $hemi = L ]; then 	
       structure=CORTEX_LEFT			

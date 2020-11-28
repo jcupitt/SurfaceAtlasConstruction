@@ -65,8 +65,7 @@ for week in {28..44}; do
         continue
       fi
 
-      # has this job completed previously? test for the existence of the final
-      # file the script makes in transmesh mode
+      # has this job completed previously? 
       output_anatomy_resampled_base=$outdir/adaptive_subjectsToDataConteALL/${scan}_week$week/$scan-Conte69.$hemi.sphere.iter${iter}_final
 
       if [ -f ${output_anatomy_resampled_base}_anatresampled.surf.gii ]; then

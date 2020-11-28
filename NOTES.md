@@ -311,6 +311,7 @@ When all iterations have finished, apply the final warps to all surfaces:
 Then average and relabel.
 
 ```
+./adaptive_dataConte_average_and_relabel.sh 7
 ```
 
 
