@@ -322,7 +322,17 @@ Dedrift the surfaces. Uses the weights CSV. 7 is the final iter.
 dataConte_dedrift_condor.sh 7
 ```
 
+Average and relabel.
 
+```
+./dataConte_dedrift_average.sh 7
+```
 
+# Strip affine
 
+Remove affine transformation from the anatomy.
+
+```
+./adaptive_remove_affine_transfom.sh 7
+```
 

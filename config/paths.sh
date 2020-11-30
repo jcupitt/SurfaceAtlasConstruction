@@ -71,7 +71,9 @@ mkdir -p $logdir
 
 run() {
 	cmd="$*"
-	echo running: $cmd
+	echo -n "running: "
+	echo $cmd | head -c 65
+  echo " ..."
 	echo running: $cmd >> $logdir/$self.$jid.log
 	echo running: $cmd >> $logdir/$self.$jid.err
 	$cmd >> $logdir/$self.$jid.log 2>> $logdir/$self.$jid.err
