@@ -33,6 +33,10 @@ for hemi in L R; do  #R ; do
 
       weights=$codedir/config/weights/w${week}.csv
 
+      # we need to make a weights file which only contains valid scans
+      tmp_weights=$outdir/tmp/temp-weights.tsv
+      rm -rf $tmp_weights
+
       while IFS='' read -r line || [[ -n "$line" ]]; do
         columns=($line)
         scan=${columns[0]}
@@ -52,6 +56,9 @@ for hemi in L R; do  #R ; do
           $dof_dir/$week/$scan-Conte69.$hemi.dedrift.$surf.iter${iter}_affine_affinewarp.dof \
           -input-format aladin 
 
+        # add to filtered weights file ... no comma
+        echo $scan $weight >> $tmp_weights
+
       done < $weights;
 
       if [ $hemi == L ]; then   
@@ -65,10 +72,11 @@ for hemi in L R; do  #R ; do
         $outdir/adaptive_subjectsToDataConteALL/week${week}_dedrift.dof \
         -v -all -invert -norigid \
         -dofdir $dof_dir/$week \
-        -dofnames $weights \
-        -prefix '' \
+        -dofnames $tmp_weights \
         -suffix -Conte69.${hemi}.dedrift.${surf}.iter${iter}_affine_affinewarp.dof
 
+      # average-dofs fails with a mat multiply error, perhaps a non-square
+      # matrix for invert?
       exit 1
 
       # apply new dof to averaged mesh
