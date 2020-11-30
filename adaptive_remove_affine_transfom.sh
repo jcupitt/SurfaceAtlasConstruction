@@ -44,7 +44,7 @@ for hemi in L R; do  #R ; do
         if [ ! -f ${output_neonatal_anat_affine_aligned}_affinewarp.txt ]; then
           continue
         fi
-	
+  
         mkdir -p $dof_dir/$week
 
         run mirtk convert-dof \
@@ -54,14 +54,14 @@ for hemi in L R; do  #R ; do
 
       done < $weights;
 
-      if [ $hemi == L ]; then 	
-        structure=CORTEX_LEFT			
+      if [ $hemi == L ]; then   
+        structure=CORTEX_LEFT     
       elif [ $hemi == R ]; then  
         structure=CORTEX_RIGHT
       fi
 
-	    # average dofs
-	    run mirtk average-dofs \
+      # average dofs
+      run mirtk average-dofs \
         $outdir/adaptive_subjectsToDataConteALL/week${week}_dedrift.dof \
         -v -all -invert -norigid \
         -dofdir $dof_dir/$week \
@@ -71,33 +71,33 @@ for hemi in L R; do  #R ; do
 
       exit 1
 
-	    # apply new dof to averaged mesh
-	    # convert everything to .vtk and apply dof to vtks; when obtaining new average, set the structure
-	    run mirtk convert-pointset \
+      # apply new dof to averaged mesh
+      # convert everything to .vtk and apply dof to vtks; when obtaining new average, set the structure
+      run mirtk convert-pointset \
         $outdir/adaptive_subjectsToDataConteALL/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE.surf.gii \
         $vtk_dir/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE.surf.vtk 
 
-	    run mirtk transform-points \
+      run mirtk transform-points \
         $vtk_dir/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE.surf.vtk \
         $vtk_dir/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.vtk \
         -dofin $outdir/adaptive_subjectsToDataConteALL/week${week}_dedrift.dof
 
-	    run mirtk convert-pointset \
+      run mirtk convert-pointset \
         $vtk_dir/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.vtk \
         $outdir/adaptive_subjectsToDataConteALL/week${week}.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.gii
 
-	    run wb_command -set-structure \
+      run wb_command -set-structure \
         $outdir/adaptive_subjectsToDataConteALL/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.gii \
         $structure
 
-	    # recentre the sphere
-	    if [ "$surf" == "sphere" ]; then
+      # recentre the sphere
+      if [ "$surf" == "sphere" ]; then
         run wb_command -surface-modify-sphere \
           $outdir/adaptive_subjectsToDataConteALL/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.gii \
           100 \
           $outdir/adaptive_subjectsToDataConteALL/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE_removedAffine.surf.gii \
           -recenter 
-	    fi
+      fi
 
     done
   done
