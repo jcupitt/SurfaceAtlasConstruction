@@ -330,7 +330,9 @@ Average and relabel.
 
 # Strip affine
 
-Remove affine transformation from the anatomy.
+Remove affine transformation from the anatomy. This needs git HEAD MIRTK
+(in dec 2020), plus a tweak to TOL, see
+https://github.com/BioMedIA/MIRTK/issues/758
 
 ```
 ./adaptive_remove_affine_transfom.sh 7

@@ -68,16 +68,18 @@ for hemi in L R; do  #R ; do
       fi
 
       # average dofs
+      #
+      # -noapproxglobal is a recent MIRTK feature that avoids global
+      # approximation and prevents occasional failure due to singlar matrix
+      # 
+      # our errors are very small, so it's fine
       run mirtk average-dofs \
         $outdir/adaptive_subjectsToDataConteALL/week${week}_dedrift.dof \
         -v -all -invert -norigid \
+        -noapproxglobal \
         -dofdir $dof_dir/$week \
         -dofnames $tmp_weights \
         -suffix -Conte69.${hemi}.dedrift.${surf}.iter${iter}_affine_affinewarp.dof
-
-      # average-dofs fails with a mat multiply error, perhaps a non-square
-      # matrix for invert?
-      exit 1
 
       # apply new dof to averaged mesh
       # convert everything to .vtk and apply dof to vtks; when obtaining new average, set the structure
