@@ -338,3 +338,20 @@ https://github.com/BioMedIA/MIRTK/issues/758
 ./adaptive_remove_affine_transfom.sh 7
 ```
 
+# Final align and average
+
+Apply alignment and average all features after final iteration (sulcal depth,
+thickness and myelin maps). This is not run on condor, but only takes a few
+hours to run on one machine.
+
+```
+./adaptive_dataConte_toConte_data_resample_average_after_iters.sh 7
+```
+
+# Package
+
+Package up the atlas ready for distribution.
+
+```
+./package.sh 7
+```

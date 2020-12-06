@@ -26,7 +26,7 @@ dof_dir=$outdir/adaptive_subjectsToDataConteALL/dofdir
 vtk_dir=$outdir/adaptive_subjectsToDataConteALL/vtk
 mkdir -p $vtk_dir
 
-for hemi in L R; do  #R ; do
+for hemi in L R; do
   for surf in very_inflated midthickness white pial sphere inflated; do
     for week in {28..44}; do
       echo processing hemi $hemi, surf $surf, week $week ...
