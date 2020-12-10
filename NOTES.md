@@ -157,7 +157,7 @@ Then to process all scans:
 ./pre_rotation_condor.sh config/subjects.tsv
 ```
 
-If you see an auth error, try rerunning `kinit`. 
+If you see an auth error, try rerunning `kinit jcupitt@IC.AC.UK`. 
 
 Check progress:
 
@@ -319,7 +319,7 @@ Then average and relabel.
 Dedrift the surfaces. Uses the weights CSV. 7 is the final iter.
 
 ```
-dataConte_dedrift_condor.sh 7
+./dataConte_dedrift_condor.sh 7
 ```
 
 Average and relabel.
@@ -332,7 +332,10 @@ Average and relabel.
 
 Remove affine transformation from the anatomy. This needs git HEAD MIRTK
 (in dec 2020), plus a tweak to TOL, see
+
 https://github.com/BioMedIA/MIRTK/issues/758
+
+Not on condor, but it only takes a few hours to run.
 
 ```
 ./adaptive_remove_affine_transfom.sh 7

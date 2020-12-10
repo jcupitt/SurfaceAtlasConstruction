@@ -9,7 +9,6 @@
 
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $codedir/config/paths.sh
-script=dataConte_dedrift_average
 
 mkdir -p $outdir/tmp
 mkdir -p $outdir/logs
@@ -82,7 +81,8 @@ for hemi in L R; do
         -suffix -Conte69.${hemi}.dedrift.${surf}.iter${iter}_affine_affinewarp.dof
 
       # apply new dof to averaged mesh
-      # convert everything to .vtk and apply dof to vtks; when obtaining new average, set the structure
+      # convert everything to .vtk and apply dof to vtks; when obtaining 
+      # new average, set the structure
       run mirtk convert-pointset \
         $outdir/adaptive_subjectsToDataConteALL/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE.surf.gii \
         $vtk_dir/week$week.iter$iter.$surf.$hemi.dedrift.AVERAGE.surf.vtk 

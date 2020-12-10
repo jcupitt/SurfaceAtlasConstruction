@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # run with eg.:
-#   ./dataConte_dedrift.sh 12 CCxx-yy 28 7 L sphere 0.7
+#   ./dataConte_dedrift.sh 12 CCxx-yy 28 7 L pial 0.7
 
 jid=$1 
 shift
@@ -58,7 +58,7 @@ run wb_command \
 # re-do computation of the template
 # do the nonlinear final anatomy, after iter=$iter
 registered_sphere=$sphere_out 
-original_anatomy=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_sphere.surf.gii
+original_anatomy=$struct_pipeline_dir/sub-$subject/ses-$session/anat/Native/sub-${subject}_ses-${session}_${hemi_name}_$surf.surf.gii
 output_neonatal_anat_affine_aligned=$outdir/adaptive_subjectsToDataConteALL/${scan}_week$week/$scan-Conte69.$hemi.dedrift.$surf.iter${iter}_affine
 output_anatomy_resampled=$outdir/adaptive_subjectsToDataConteALL/${scan}_week$week/$scan-Conte69.$hemi.dedrift.$surf.iter${iter}_resampled
 output_anatomy_resampled_base=$outdir/adaptive_subjectsToDataConteALL/${scan}_week$week/$scan-Conte69.$hemi.dedrift.$surf.iter${iter}_final

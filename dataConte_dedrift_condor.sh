@@ -68,19 +68,19 @@ for hemi in L R; do  #R ; do
           continue
         fi
 
-#       (( n_submitted += 1 ))
-#       echo "" >> $condor_spec
-#       echo "arguments = \$(Process) \
-#         $scan \
-#         $week \
-#         $iter \
-#         $hemi \
-#         $surf \
-#         $weight " >> $condor_spec
-#       echo "Queue" >> $condor_spec
+        #(( n_submitted += 1 ))
+        #echo "" >> $condor_spec
+        #echo "arguments = \$(Process) \
+        #  $scan \
+        #  $week \
+        #  $iter \
+        #  $hemi \
+        #  $surf \
+        #   $weight " >> $condor_spec
+        #echo "Queue" >> $condor_spec
 
         # execute immediately rather than via condor
-        echo executing $scan ...
+        run echo -n $scan $week $hemi $surf 
         run $codedir/dataConte_dedrift.sh 12 \
           $scan $week $iter $hemi $surf $weight
 

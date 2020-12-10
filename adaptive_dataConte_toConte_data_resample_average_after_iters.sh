@@ -27,13 +27,9 @@ for hemi in L R; do
 
   for data in sulc thickness myelin_map; do  
     for week in {28..44}; do
-      outfilename=week$week.iter$iter.$data.$hemi.AVERAGE.shape.gii
-      if [ -f $outdir/adaptive_subjectsToDataConteALL/$outfilename ]; then
-        continue
-      fi
-
       echo processing hemi $hemi, data $data, week $week ...
 
+      outfilename=week$week.iter$iter.$data.$hemi.AVERAGE.shape.gii
       weights=$codedir/config/weights/w${week}.csv
       n_prior_missing=0
       n_native_missing=0
