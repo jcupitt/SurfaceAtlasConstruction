@@ -172,6 +172,8 @@ Then to process all scans:
 ./pre_rotation_condor.sh config/subjects.tsv
 ```
 
+## Condor tips
+
 If you see an auth error, try rerunning `kinit jcupitt@IC.AC.UK`. 
 
 Check progress:
@@ -194,6 +196,15 @@ condor_rm 183
 
 And try running `pre_rotation_condor.sh` again (it will only resubmit jobs for
 images which did not generate).
+
+You can use `loop.sh` or `loop2.sh` to automatically resubmit failed jobs
+until everything passes. For example:
+
+```
+./loop.sh ./pre_rotation_condor.sh config/subjects.tsv 
+```
+
+Run inside `screen` so you don't lose work if the VPN disconnects.
 
 ## Alignment to Conte69 atlas
 
@@ -329,7 +340,7 @@ Then average and relabel.
 ./adaptive_dataConte_average_and_relabel.sh 7
 ```
 
-# Dedrift
+## Dedrift
 
 Dedrift the surfaces. Uses the weights CSV. 7 is the final iter.
 
@@ -343,7 +354,7 @@ Average and relabel.
 ./dataConte_dedrift_average.sh 7
 ```
 
-# Strip affine
+## Strip affine
 
 Remove affine transformation from the anatomy. This needs git HEAD MIRTK
 (in dec 2020), plus a tweak to TOL, see
@@ -356,7 +367,7 @@ Not on condor, but it only takes a few hours to run.
 ./adaptive_remove_affine_transfom.sh 7
 ```
 
-# Final align and average
+## Final align and average
 
 Apply alignment and average all features after final iteration (sulcal depth,
 thickness and myelin maps). This is not run on condor, but only takes a few
@@ -366,7 +377,7 @@ hours to run on one machine.
 ./adaptive_dataConte_toConte_data_resample_average_after_iters.sh 7
 ```
 
-# Package
+## Package
 
 Package up the atlas ready for distribution.
 
